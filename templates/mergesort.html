@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <button onclick="generate_array()">Iniciar</button>
+</head>
+
+
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.min.js"
+        integrity="sha512-WIklPM6qPCIp6d3fSSr90j+1unQHUOoWDS4sdTiR8gxUTnyZ8S2Mr8e10sKKJ/bhJgpAa/qG068RDkg6fIlNFA=="
+        crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"
+        integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+    <script type="text/javascript" charset="utf-8">
+        let socket = io();
+        socket.on('update', function(data) {
+          start(data.array);
+        });
+    </script>
+    <script>
+        
+        var started = false;
+        var values = [];
+        var numLines = 8;
+        var sortHist = [];
+
+        function generate_array(){
+          for (i = 0; i < numLines; i++) {
+            values[i] = random(600);
+          }
+          socket.emit('start', { array: values });
+        }
+
+        function start(array) {
+            sortHist = array;
+            started = true;
+            loop();
+        }
+
+        function setup() {
+            createCanvas(900, 600);
+            colorMode(HSB, height);
+            frameRate(1);
+            noLoop();
+        }
+
+        var historyIndex = 0;
+        function draw() {
+            if (started) {
+                background(51);
+                for (i = 0; i < sortHist[historyIndex].length; i++) {
+                    let col = color(sortHist[historyIndex][i], height, height);
+                    stroke(col);
+                    fill(col);
+                    var location = map(i, 0, sortHist[historyIndex].length, 0, width);
+                    rect(location, height - sortHist[historyIndex][i], width / numLines, height);
+    
+                    textSize(14);
+                    fill('#000');
+                    text(int(sortHist[historyIndex][i]), location + 5, height-10);
+                    noLoop();
+                    setTimeout(function(){
+                      loop();
+                    }, 1500);
+                }
+                historyIndex++;
+                if (historyIndex > sortHist.length - 1) {
+                    started = false;
+                    historyIndex = 0;
+                    noLoop();
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

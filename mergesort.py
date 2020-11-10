@@ -47,8 +47,3 @@ def merge(left, right, left_limit, right_limit, arr, buffer):
         buffer[index] = arr[right]
         index += 1
         right += 1
-
-
-arr = [20,10,2,4,80,9,11,5]
-
-print(mergesort(arr))
