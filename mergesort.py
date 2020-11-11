@@ -18,7 +18,7 @@ def mergesort(arr):
             
             left += 2 * size
         
-        array_sorted, buffer = buffer, array_sorted
+        array_sorted, buffer = buffer, buffer.copy()
 
         size *= 2
     

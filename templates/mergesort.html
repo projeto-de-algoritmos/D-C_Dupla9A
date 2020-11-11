@@ -46,11 +46,14 @@
         function generate_array(){
           var row = document.getElementById('row');
           numLines = row.value;
+          values = [];
           for (i = 0; i < numLines; i++) {
             values[i] = random(600);
           }
           if(numLines >= 64){
             frameRate(10);
+          } else {
+            frameRate(1);
           }
           socket.emit('start', { array: values });
         }
