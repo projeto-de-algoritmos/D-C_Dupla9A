@@ -5,7 +5,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <button onclick="generate_array()">Iniciar</button>
+    <div class="content">
+      <div>
+        <p class="text">Demonstração gráfica do algoritmo do módulo de Dividir e Conquistar - MergeSort</p>
+      </div>
+      <div class="input">
+        <labe class="text"l>Selecione a quantidade de elementos</label>
+        <select id="row">
+          <option value="8">8</option>
+          <option value="16">16</option>
+          <option value="32">32</option>
+          <option value="64">64</option>
+          <option value="128">128</option>
+        </select>
+      </div>
+      <button class="button" onclick="generate_array()">Iniciar</button>
+      </div>
 </head>
 
 
@@ -14,11 +29,11 @@
         integrity="sha512-WIklPM6qPCIp6d3fSSr90j+1unQHUOoWDS4sdTiR8gxUTnyZ8S2Mr8e10sKKJ/bhJgpAa/qG068RDkg6fIlNFA=="
         crossorigin="anonymous"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"
-        integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
-    <script type="text/javascript" charset="utf-8">
-        let socket = io();
-        socket.on('update', function(data) {
-          start(data.array);
+    integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+<script type="text/javascript" charset="utf-8">
+    let socket = io();
+    socket.on('update', function(data) {
+      start(data.array);
         });
     </script>
     <script>
@@ -29,8 +44,13 @@
         var sortHist = [];
 
         function generate_array(){
+          var row = document.getElementById('row');
+          numLines = row.value;
           for (i = 0; i < numLines; i++) {
             values[i] = random(600);
+          }
+          if(numLines >= 64){
+            frameRate(10);
           }
           socket.emit('start', { array: values });
         }
@@ -42,10 +62,12 @@
         }
 
         function setup() {
-            createCanvas(900, 600);
-            colorMode(HSB, height);
-            frameRate(1);
-            noLoop();
+          var canvas = createCanvas(900, 600);
+          canvas.style('margin-top', '15px');
+          canvas.style('margin-left', '15%');
+          colorMode(HSB, height);
+          frameRate(1);
+          noLoop();
         }
 
         var historyIndex = 0;
@@ -58,14 +80,16 @@
                     fill(col);
                     var location = map(i, 0, sortHist[historyIndex].length, 0, width);
                     rect(location, height - sortHist[historyIndex][i], width / numLines, height);
-    
-                    textSize(14);
-                    fill('#000');
-                    text(int(sortHist[historyIndex][i]), location + 5, height-10);
-                    noLoop();
-                    setTimeout(function(){
-                      loop();
-                    }, 1500);
+                    
+                    if(numLines < 64){
+                      textSize(14);
+                      fill('#000');
+                      text(int(sortHist[historyIndex][i]), location + 5, height-10);
+                      noLoop();
+                      setTimeout(function(){
+                        loop();
+                      }, 1500);
+                    }
                 }
                 historyIndex++;
                 if (historyIndex > sortHist.length - 1) {
@@ -79,3 +103,32 @@
 </body>
 
 </html>
+
+<style>
+  .button {
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 38px;
+    color: white;
+    padding: 9px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 15px;
+    margin-left: 35%;
+}
+
+.text {
+    font-family: Sans-serif;
+}
+
+.content {
+  width: 50%;
+  margin: auto;
+}
+
+.input{
+  margin-left: 22%;
+}
+</style>
