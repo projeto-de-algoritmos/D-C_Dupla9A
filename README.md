@@ -13,7 +13,11 @@
 Esse projeto demonstra uma visualização gráfica da execução do MergeSort, em um array desordenado, gerado aleatoriamente. Foi implementada a versão _bottom up_ do algoritmo, isto é, iterativa. A visualização é construída ao se manter _snapshots_ do array após cada chamada à função de _merge_. Nota-se que a velocidade da visualização não corresponde à velocidade de execução do algoritmo - no momento em que a visualização é iniciada a ordenação já foi completamente realizada.
 
 ## Screenshots
-Adicione 3 ou mais screenshots do projeto em funcionamento.
+
+
+![Array Desordenado](images/print1.png)
+![Array Durante Ordenação](images/print2.png)
+![Array Ordenado](images/print3.png)
 
 ## Instalação 
 **Linguagens**: Python e HTML/JS<br>
